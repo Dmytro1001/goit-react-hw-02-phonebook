@@ -1,89 +1,60 @@
-// import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
-
-// Form, Field, FieldArray
+import PropTypes from 'prop-types';
+import * as Yup from 'yup';
+import { Formik, ErrorMessage } from 'formik';
+import { FormField, Form, Field, SubmitBtn } from './ContactForm.module';
 
 const initialValues = {
   name: '',
-  //   number: '',
+  number: '',
 };
 
+const phoneRegExp =
+  /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
+
+const SignupSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(3, 'must be at least 3 characters long')
+    .max(15, 'Too Long!')
+    .required('Required'),
+  number: Yup.string()
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .required('A phone number is required'),
+});
+
 export const ContactForm = ({ onSave }) => {
-  const handleSubmit = e => {
-    e.preventDefaulte();
-    const { values, actions } = e.target.elements;
+  const handleSubmit = (values, actions) => {
+    actions.resetForm();
+    // actions.preventDefaulte();
+    // { values, actions } = e.target.elements;
     console.log(values);
     console.log(actions);
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={SignupSchema}
+      onSubmit={handleSubmit}
+    >
       <Form autoCompolete="off">
-        <label htmlFor="name">
+        <FormField htmlFor="name">
           Name
           <Field type="text" name="name" placeholder="Name" />
-        </label>
-        <button type="submit">Add contact</button>
+          <ErrorMessage name="name" />
+        </FormField>
+        <FormField htmlFor="name">
+          Number
+          <Field type="tel" name="number" placeholder="Phon number" />
+          <ErrorMessage name="number" />
+        </FormField>
+        <SubmitBtn type="submit">
+          <span className="text">Add contact</span>
+        </SubmitBtn>
       </Form>
     </Formik>
   );
 };
 
-// ContactForm.propTypes = {
-//   name: PropTypes.string.isRequired,
-// };
-
-// <Formik
-//   initialValues={{ friends: ['jared', 'ian', 'brent'] }}
-//   onSubmit={values =>
-//     setTimeout(() => {
-//       alert(JSON.stringify(values, null, 2));
-//     }, 500)
-//   }
-//   render={({ values }) => (
-//     <Form>
-//       <FieldArray
-//         name="friends"
-//         render={arrayHelpers => (
-//           <div>
-//             {values.friends && values.friends.length > 0 ? (
-//               values.friends.map((friend, index) => (
-//                 <div key={index}>
-//                   <Field name={`friends.${index}`} />
-//                   <button
-//                     type="button"
-//                     onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-//                   >
-//                     -
-//                   </button>
-//                   <button
-//                     type="button"
-//                     onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
-//                   >
-//                     +
-//                   </button>
-//                 </div>
-//               ))
-//             ) : (
-//               <button type="button" onClick={() => arrayHelpers.push('')}>
-//                 {/* show this when user has removed all friends from the list */}
-//                 Add a friend
-//               </button>
-//             )}
-//             <div>
-//               <button type="submit">Submit</button>
-//             </div>
-//           </div>
-//         )}
-//       />
-//     </Form>
-//   )}
-// />
-
-/* <input
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          /> */
+ContactForm.propTypes = {
+  onSave: PropTypes.func,
+};
