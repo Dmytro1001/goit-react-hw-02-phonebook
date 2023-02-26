@@ -46,7 +46,7 @@ export const ContactForm = ({ onSubmitContact }) => {
       validationSchema={SignupSchema}
       onSubmit={handleSubmit}
     >
-      <Form autoCompolete="off">
+      <Form autoComplete="off">
         <FormField htmlFor="name">
           Name
           <Field type="text" name="name" placeholder="Name" />
