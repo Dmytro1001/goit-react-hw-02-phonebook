@@ -5,7 +5,12 @@ export const Filter = ({ value, onChange }) => {
   return (
     <FilterTitle>
       Find contacts by name
-      <FilterInput type="text" value={value} onChange={onChange} />
+      <FilterInput
+        type="text"
+        value={value}
+        onChange={onChange}
+        placeholder="Contact name"
+      />
     </FilterTitle>
   );
 };

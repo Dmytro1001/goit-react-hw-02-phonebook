@@ -6,11 +6,6 @@ import { Filter } from './Filter/Filter';
 import { GlobalStyles } from './GlobalStyles';
 import { Wrapper } from './App.module';
 
-// const INITIAL_STATE = {
-//   name: '',
-//   number: '',
-// };
-
 export class App extends Component {
   state = {
     contacts: [
@@ -44,8 +39,8 @@ export class App extends Component {
     });
   };
 
-  changeFilter = evt => {
-    this.setState({ filter: evt.currentTarget.value });
+  changeFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
   };
 
   getFilteredContacts = () => {

@@ -6,4 +6,5 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding-top: 40px;
 `;
