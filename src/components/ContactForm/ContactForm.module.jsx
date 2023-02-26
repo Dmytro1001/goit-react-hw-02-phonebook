@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { Form as FormicForm, Field as FormicField } from 'formik';
+import {
+  Form as FormicForm,
+  Field as FormicField,
+  ErrorMessage as FormicError,
+} from 'formik';
 
 export const FormField = styled.label`
   display: flex;
@@ -45,7 +49,6 @@ export const SubmitBtn = styled.button`
   text-align: center;
   text-decoration: none;
   text-rendering: geometricprecision;
-  /* text-transform: uppercase; */
   transition: opacity 300ms cubic-bezier(0.694, 0, 0.335, 1),
     background-color 100ms cubic-bezier(0.694, 0, 0.335, 1),
     color 100ms cubic-bezier(0.694, 0, 0.335, 1);
@@ -84,4 +87,9 @@ export const SubmitBtn = styled.button`
     z-index: 1;
     position: relative;
   }
+`;
+
+export const ErrorMessage = styled(FormicError)`
+  color: tomato;
+  font-size: 12px;
 `;

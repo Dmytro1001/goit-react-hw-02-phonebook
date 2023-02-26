@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
+import React from 'react';
+import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
-import { Formik, ErrorMessage } from 'formik';
-import { FormField, Form, Field, SubmitBtn } from './ContactForm.module';
+import { Formik } from 'formik';
+import {
+  FormField,
+  Form,
+  Field,
+  SubmitBtn,
+  ErrorMessage,
+} from './ContactForm.module';
 
 const initialValues = {
   name: '',
@@ -14,20 +22,22 @@ const phoneRegExp =
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, 'must be at least 3 characters long')
-    .max(15, 'Too Long!')
+    .max(25, 'Too Long!')
     .required('Required'),
   number: Yup.string()
+    .min(7, 'Too Short!')
+    .max(25, 'Too Long!')
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('A phone number is required'),
 });
 
-export const ContactForm = ({ onSave }) => {
+export const ContactForm = ({ onSubmitContact }) => {
   const handleSubmit = (values, actions) => {
     actions.resetForm();
-    // actions.preventDefaulte();
-    // { values, actions } = e.target.elements;
-    console.log(values);
-    console.log(actions);
+    onSubmitContact({
+      ...values,
+      id: nanoid(),
+    });
   };
 
   return (
@@ -40,12 +50,12 @@ export const ContactForm = ({ onSave }) => {
         <FormField htmlFor="name">
           Name
           <Field type="text" name="name" placeholder="Name" />
-          <ErrorMessage name="name" />
+          <ErrorMessage name="name" component="span" />
         </FormField>
         <FormField htmlFor="name">
           Number
           <Field type="tel" name="number" placeholder="Phon number" />
-          <ErrorMessage name="number" />
+          <ErrorMessage name="number" component="span" />
         </FormField>
         <SubmitBtn type="submit">
           <span className="text">Add contact</span>
@@ -56,5 +66,5 @@ export const ContactForm = ({ onSave }) => {
 };
 
 ContactForm.propTypes = {
-  onSave: PropTypes.func,
+  onSubmitContact: PropTypes.func.isRequired,
 };
